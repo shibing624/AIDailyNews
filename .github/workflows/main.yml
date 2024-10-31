@@ -24,7 +24,7 @@ jobs:
       GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
       AI_PROVIDER: openai
       GPT_MODEL_NAME: gpt-4o-mini
-      GPT_BASE_URL: https://oa.api2d.net
+      GPT_BASE_URL: ${{ secrets.GPT_BASE_URL }}
       GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
 
     steps:
