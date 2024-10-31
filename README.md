@@ -8,7 +8,7 @@ My Daily News：一键部署独属于你的每日新闻总览,支持 GPT3，Gemi
 
 ## Get Started
 
-Fork 该仓库，删除 [src/content/blog](https://github.com/zhangferry/AIDailyNews/tree/main/src/content/blog) 里的文件，然后做如下修改：
+Fork 该仓库，然后做如下修改：
 
 1、修改 [rss.json](https://github.com/zhangferry/AIDailyNews/blob/main/workflow/resources/rss.json)，这里是你要订阅的 RSS 内容，以下是各参数说明：
    ```json5
