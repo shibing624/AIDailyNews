@@ -12,12 +12,14 @@
                 },
                 {
                     "title": "36Kr 最新资讯频道",
-                    "url": "https://rss.aishort.top/?type=36kr"
+                    "url": "https://rss.aishort.top/?type=36kr",
+                    "output_count": 1
                 },
                 {
                     "title": "瓦斯阅读",
                     "url": "https://rss.aishort.top/?type=wasi",
-                    "type": "link"
+                    "type": "link",
+                    "output_count": 1
                 }
             ]
         },
@@ -28,7 +30,7 @@
                     "title": "Hacker News - AI",
                     "url": "https://hnrss.org/newest?q=AI",
                     "type": "link",
-                    "output_count": 4
+                    "output_count": 3
                 },
                 {
                     "title": "Hacker News - LLM",
@@ -96,7 +98,7 @@
                 {
                     "title": "Latest News - Apple Developer",
                     "url": "https://developer.apple.com/news/rss/news.rss",
-                    "output_count": 2,
+                    "output_count": 1,
                     "image_enable": true
                 }
             ]
@@ -108,13 +110,15 @@
                     "title": "Github repo trending",
                     "rsshub_path": "github/trending/weekly/python",
                     "type": "code",
-                    "input_count": 3
+                    "input_count": 3,
+                    "output_count": 3
                 },
                 {
                     "title": "Github repo trending",
                     "rsshub_path": "github/trending/weekly/any",
                     "type": "code",
-                    "input_count": 2
+                    "input_count": 1,
+                    "output_count": 0
                 }
             ]
         },
