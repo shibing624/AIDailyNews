@@ -1,16 +1,13 @@
+import os
 import workflow.mainflow as mainflow
 from dotenv import load_dotenv
 from loguru import logger
-import os
 
-# Press the green button in the gutter to run the script.
+
+pwd_path = os.path.abspath(os.path.dirname(__file__))
+env_file = os.path.join(pwd_path, ".env")
+
 if __name__ == '__main__':
-
-    load_dotenv()
-    logger.info(f"envs: {os.environ}")
-
-    # os.environ["https_proxy"] = "http://127.0.0.1:465"
-    # os.environ["http_proxy"] = "http://127.0.0.1:465"
-    # os.environ["all_proxy"] = "http://127.0.0.1:465"
-
+    load_dotenv(env_file, override=True)
+    logger.info(f"env_file:{env_file}, {os.environ}")
     mainflow.execute()

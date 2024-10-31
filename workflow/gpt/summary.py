@@ -1,8 +1,6 @@
 import json
 import os
 
-import google.generativeai as genai
-from dotenv import load_dotenv
 from openai import OpenAI
 from loguru import logger
 
@@ -10,8 +8,6 @@ from workflow.gpt.prompt import multi_content_prompt
 
 
 def evaluate_article_with_gpt(articles):
-    load_dotenv()
-
     article_links = [article.link for article in articles]
     logger.info(f"start summary: {article_links}")
 
@@ -39,6 +35,7 @@ def evaluate_article_with_gpt(articles):
 
 
 def request_gemini(prompt, content):
+    import google.generativeai as genai
     input_text = f"{prompt}: {content}"
 
     api_key = os.environ.get("GPT_API_KEY")
@@ -82,8 +79,12 @@ def request_gemini(prompt, content):
 
 def request_openai(prompt, content):
     try:
-        client = OpenAI(api_key=os.environ["GPT_API_KEY"],
-                        base_url=os.environ.get("GPT_BASE_URL", "https://api.openai.com"))
+        api_key = os.getenv("GPT_API_KEY")
+        base_url = os.getenv("GPT_BASE_URL")
+        model = os.getenv("GPT_MODEL_NAME", "gpt-4o-mini")
+        # logger.debug(f"request openai: {api_key}, {base_url}")
+        client = OpenAI(api_key=api_key,
+                        base_url=base_url)
 
         chat_completion = client.chat.completions.create(messages=[
             {
@@ -94,7 +95,7 @@ def request_openai(prompt, content):
                 "role": "user",
                 "content": content
             }
-        ], model=os.environ.get("GPT_MODEL_NAME", "gpt-3.5-turbo"))
+        ], model=model)
         return chat_completion.choices[0].message.content
     except Exception as e:
         logger.error(f"request openai failed: {e}")
@@ -116,3 +117,26 @@ def transform2json(result):
         logger.exception(f"{e}")
     finally:
         return format_json
+
+
+if __name__ == '__main__':
+    from workflow.article.rss import gen_article_from
+    from dotenv import load_dotenv
+
+    pwd_path = os.path.abspath(os.path.dirname(__file__))
+
+    load_dotenv(dotenv_path=os.path.join(pwd_path, '../../.env'), override=True)
+    g = os.getenv("GPT_BASE_URL")
+    a = os.getenv("GPT_API_KEY")
+    c = os.getenv("GPT_MODEL_NAME")
+    logger.info(f"envs: {g}, {a}, {c}")
+
+    rss_item = {
+        "link": "https://github.com/groue/GRDB.swift",
+        "title": "grdb.swift"
+    }
+
+    article = gen_article_from(rss_item=rss_item, rss_type="code")
+    logger.info(f"article: {article.summary}, {article.title}")
+    res = evaluate_article_with_gpt([article])
+    print(res)

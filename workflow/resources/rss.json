@@ -4,122 +4,20 @@
     },
     "categories": [
         {
-            "category": "🍎 iOS Blog",
+            "category": "🤖 AI info",
             "items": [
                 {
-                    "title": "Swift.org",
-                    "url": "https://www.swift.org/atom.xml",
-                    "image_enable": true
+                    "title": "oneminute_daily_ai_news RSS",
+                    "url": "https://www.reddit.com/user/Excellent-Target-847/.rss"
                 },
                 {
-                    "title": "swiftbysundell",
-                    "url": "https://swiftbysundell.com/feed.rss"
+                    "title": "36Kr 最新资讯频道",
+                    "url": "https://rss.aishort.top/?type=36kr"
                 },
                 {
-                    "title": "SwiftLee RSS",
-                    "url": "https://www.avanderlee.com/feed/"
-                },
-                {
-                    "title": "肘子的 Swift 记事本",
-                    "url": "https://www.fatbobman.com/feed.rss",
+                    "title": "瓦斯阅读",
+                    "url": "https://rss.aishort.top/?type=wasi",
                     "type": "link"
-                },
-                {
-                    "title": "Donny Wals",
-                    "url": "https://www.donnywals.com/feed/",
-                    "type": "link"
-                },
-                {
-                    "title": "Daniel Saidi",
-                    "url": "https://danielsaidi.com/feed.xml"
-                },
-                {
-                    "title": "Augmented Code",
-                    "url": "https://augmentedcode.io/blog/feed/"
-                },
-                {
-                    "title": "massicotte.org",
-                    "url": "https://www.massicotte.org/feed.xml"
-                },
-                {
-                    "title": "Emerge Tools Blog",
-                    "url": "https://www.emergetools.com/rss.xml"
-                },
-                {
-                    "title": "Ole Begemann",
-                    "url": "https://oleb.net/blog/atom.xml"
-                },
-                {
-                    "title": "Swift with Majid",
-                    "url": "https://swiftwithmajid.com/feed.xml"
-                },
-                {
-                    "title": "manu.show",
-                    "url": "https://www.manu.show/feed.xml"
-                },
-                {
-                    "title": "Wade Tregaskis",
-                    "url": "https://wadetregaskis.com/feed/"
-                },
-                {
-                    "title": "overdesigned blog",
-                    "url": "https://blog.overdesigned.net/feed.rss"
-                },
-                {
-                    "title": "otbivnoe’s blog",
-                    "url": "https://otbivnoe.ru/feed.xml"
-                },
-                {
-                    "title": "Scott Smith Dev",
-                    "url": "https://scottsmithdev.com/rss.xml"
-                },
-                {
-                    "title": "Swift on server",
-                    "url": "https://swiftonserver.com/rss.xml",
-                    "type": "link"
-                },
-                {
-                    "title": "Swift Unwrap",
-                    "url": "https://swiftunwrap.com/feed.rss"
-                },
-                {
-                    "title": "Swiftology",
-                    "url": "https://swiftology.io/feed.rss"
-                },
-                {
-                    "title": "Bryce Pauken",
-                    "url": "https://bryce.co/index.xml",
-                    "type": "link"
-                },
-                {
-                    "title": "Brentley’s Blog",
-                    "url": "https://brentley.dev/rss.xml"
-                },
-                {
-                    "title": "byla.lt",
-                    "url": "https://byla.lt/feed.rss"
-                },
-                {
-                    "title": "ryanashcraft",
-                    "url": "https://ryanashcraft.com/rss/"
-                },
-                {
-                    "title": "OneV's Den",
-                    "url": "https://onevcat.com/feed.xml",
-                    "type": "link"
-                },
-                {
-                    "title": "SwiftToolkit",
-                    "url": "https://swifttoolkit.dev/feed.rss"
-                },
-                {
-                    "title": "hypercritical",
-                    "url": "https://hypercritical.co/feeds/main"
-                },
-                {
-                    "title": "Six Colors",
-                    "url": "https://feedpress.me/sixcolors",
-                    "description": "Apple, technology, and other stuff by Jason Snell & Dan Moren"
                 }
             ]
         },
@@ -127,16 +25,16 @@
             "category": "📥 Tech News",
             "items": [
                 {
-                    "title": "Latest News - Apple Developer",
-                    "url": "https://developer.apple.com/news/rss/news.rss",
-                    "output_count": 2,
-                    "image_enable": true
+                    "title": "Hacker News - AI",
+                    "url": "https://hnrss.org/newest?q=AI",
+                    "type": "link",
+                    "output_count": 4
                 },
                 {
-                    "title": "Hacker News - Apple",
-                    "url": "https://hnrss.org/newest?q=apple",
+                    "title": "Hacker News - LLM",
+                    "url": "https://hnrss.org/newest?q=llm",
                     "type": "link",
-                    "output_count": 1
+                    "output_count": 3
                 },
                 {
                     "title": "OpenAI Blog",
@@ -146,11 +44,6 @@
                 {
                     "title": "Facebook Engineering",
                     "url": "https://engineering.fb.com/feed/"
-                },
-                {
-                    "title": "maxOS",
-                    "url": "https://maxoxo.me/rss/",
-                    "type": "link"
                 },
                 {
                     "title": "潮流周刊",
@@ -172,11 +65,6 @@
                 {
                     "title": "Julia Evans",
                     "url": "https://jvns.ca/atom.xml"
-                },
-                {
-                    "title": "v2ex",
-                    "rsshub_path": "v2ex/topics/latest",
-                    "output_count": 1
                 },
                 {
                     "title": "人人都是产品经理",
@@ -204,6 +92,12 @@
                     "title": "值得一读技术博客",
                     "url": "https://daily-blog.chlinlearn.top/feed",
                     "type": "link"
+                },
+                {
+                    "title": "Latest News - Apple Developer",
+                    "url": "https://developer.apple.com/news/rss/news.rss",
+                    "output_count": 2,
+                    "image_enable": true
                 }
             ]
         },
@@ -212,9 +106,9 @@
             "items": [
                 {
                     "title": "Github repo trending",
-                    "rsshub_path": "github/trending/weekly/swift",
+                    "rsshub_path": "github/trending/weekly/python",
                     "type": "code",
-                    "input_count": 2
+                    "input_count": 3
                 },
                 {
                     "title": "Github repo trending",

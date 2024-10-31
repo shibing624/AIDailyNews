@@ -8,6 +8,8 @@ import requests
 from bs4 import BeautifulSoup
 from loguru import logger
 from markdown import markdown
+import base64
+import time
 
 # 统一时区
 time_zone_value = "Asia/Shanghai"
@@ -81,14 +83,18 @@ def parse_rss_config(rss_config):
                                                   article.get(keymap["date"],
                                                               res.get(keymap["date"]))))
         if article_date.date() != target_date:
+            # logger.warning(f'{rss_config["url"]} content of {article_date.date()} is not equal to {target_date}')
             continue
-        rss = gen_article_from(rss_item=article, rss_type=rss_config.get("type"), image_enable=rss_config.get("image_enable", False),
+        rss = gen_article_from(rss_item=article, rss_type=rss_config.get("type"),
+                               image_enable=rss_config.get("image_enable", False),
                                rss_date=article_date.strftime("%Y-%m-%d %H:%M:%S"), channel=res[keymap["channel"]],
                                config=rss_config)
         if rss is None:
+            # logger.warning(f'{rss_config["url"]} content is empty')
             continue
         today_rss.append(rss)
         if len(today_rss) >= max_count:
+            logger.warning(f'{rss_config["url"]} content count of today is over {max_count}, break')
             return today_rss
     # 防止一个地址有过多内容，这里限定下数量
     if len(today_rss) == 0:
@@ -96,6 +102,7 @@ def parse_rss_config(rss_config):
     else:
         logger.info(f'{rss_config["url"]} content count of today is {len(today_rss)}')
     return today_rss
+
 
 def gen_article_from(rss_item, rss_type, image_enable=False, rss_date=None, channel=None, config=None):
     title = rss_item["title"]
@@ -114,12 +121,12 @@ def gen_article_from(rss_item, rss_type, image_enable=False, rss_date=None, chan
         return None
 
     article = Article(title=title,
-                  summary=summary,
-                  link=link,
-                  date=rss_date,
-                  info=channel,
-                  config=config,
-                  cover_url=image_url)
+                      summary=summary,
+                      link=link,
+                      date=rss_date,
+                      info=channel,
+                      config=config,
+                      cover_url=image_url)
     return article
 
 
@@ -145,7 +152,8 @@ def unify_timezone(date_string):
 
 def parse_web_page(url):
     try:
-        response = requests.get(url)
+        response = requests.get(url, verify=False)
+        logger.debug(f"fetch {url} status code: {response.status_code}")
         if response.status_code == 200:
             # 指定编码方式
             response.encoding = response.apparent_encoding
@@ -176,36 +184,61 @@ def extract_image_links(text):
 
 def parse_github_readme(repo_url):
     try:
-        repo_url = get_real_url(repo_url)
-        # 提取用户名和仓库名
         username, repo_name = repo_url.split("/")[-2:]
         api_url = f"https://api.github.com/repos/{username}/{repo_name}/readme"
-        response = requests.get(api_url)
-        response.raise_for_status()
-        # 解析响应，提取 README 内容
+        headers = {'Accept': 'application/vnd.github.v3+json'}
+        retry_count = 0
+        max_retries = 3
+
+        while retry_count < max_retries:
+            response = requests.get(api_url, headers=headers)
+            logger.debug(f"fetch {api_url} status code: {response.status_code}")
+
+            if response.status_code == 200:
+                break
+            elif response.status_code == 403 and 'X-RateLimit-Reset' in response.headers:
+                reset_time = int(response.headers['X-RateLimit-Reset'])
+                sleep_time = max(0, reset_time - time.time())
+                sleep_time = min(sleep_time, 5)
+                logger.warning(f"Rate limit exceeded. Sleeping for {sleep_time} seconds.")
+                time.sleep(sleep_time)
+                retry_count += 1
+            else:
+                response.raise_for_status()
+
+        if retry_count == max_retries:
+            logger.error(f"Max retries reached for {api_url}")
+            return ''
+
         readme_content = response.json()["content"]
-        # 将 Base64 编码的内容解码为字符串
-        import base64
         readme_content = base64.b64decode(readme_content).decode("utf-8")
 
-        # md > html > text
         html = markdown(readme_content)
-        # remove code snippets
         html = re.sub(r'<pre>(.*?)</pre>', '', html, flags=re.DOTALL)
         html = re.sub(r'<code>(.*?)</code>', '', html, flags=re.DOTALL)
         html = re.sub(r'```(.*?)```', '', html, flags=re.DOTALL)
         soup = BeautifulSoup(html, "html.parser")
         text = ''.join(soup.findAll(string=True))
         return text.strip()
-
     except Exception as e:
         logger.error(f"fetch {repo_url} get error: {e}")
         return None
+
 
 def get_real_url(short_url):
     # get real url from short url
     response = requests.head(short_url, allow_redirects=True)
     return response.url
 
+
 def rss_env():
     os.environ[""] = ""
+
+if __name__ == '__main__':
+    url = "https://www.theverge.com/2024/9/3/24234777/microsoft-apple-cloud-gaming-app-store-changes-xbox-cma"
+    content = parse_web_page(url)
+    print(content)
+    url = "https://github.com/hmlongco/Factory"
+    content = parse_github_readme(url)
+    print(content)
+

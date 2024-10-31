@@ -33,7 +33,7 @@ Fork 该仓库，删除 [src/content/blog](https://github.com/zhangferry/AIDaily
 
    - `AI_PROVIDER`: 可选 `gemini` 和 `openai`。默认 `gemini`
    - `GPT_API_KEY`: 根据设置的 AI 能力填写对应的 Key
-   - `GPT_BASE_HOST`: 默认官方地址，可选
+   - `GPT_BASE_URL`: 默认官方地址，可选
 
    更新仓库所需：
 
