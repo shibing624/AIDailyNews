@@ -8,7 +8,15 @@
             "items": [
                 {
                     "title": "oneminute_daily_ai_news RSS",
-                    "url": "https://www.reddit.com/user/Excellent-Target-847/.rss"
+                    "url": "https://www.reddit.com/user/Excellent-Target-847/.rss",
+                    "type": "link",
+                    "output_count": 1
+                },
+                {
+                    "title": "Hacker News - AI",
+                    "url": "https://hnrss.org/newest?q=AI",
+                    "type": "link",
+                    "output_count": 3
                 },
                 {
                     "title": "36Kr 最新资讯频道",
@@ -19,19 +27,13 @@
                     "title": "瓦斯阅读",
                     "url": "https://rss.aishort.top/?type=wasi",
                     "type": "link",
-                    "output_count": 1
+                    "output_count": 0
                 }
             ]
         },
         {
             "category": "📥 Tech News",
             "items": [
-                {
-                    "title": "Hacker News - AI",
-                    "url": "https://hnrss.org/newest?q=AI",
-                    "type": "link",
-                    "output_count": 3
-                },
                 {
                     "title": "Hacker News - LLM",
                     "url": "https://hnrss.org/newest?q=llm",
