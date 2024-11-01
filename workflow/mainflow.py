@@ -12,6 +12,7 @@ def execute(rss_resource="workflow/resources"):
     cache_folder, cache_file = find_valid_file()
     origin_article_list = parse_daily_rss_article(rss_resource, cache_file)
     if cache_folder:
+        os.makedirs(cache_folder, exist_ok=True)
         save_article(origin_article_list, cache_folder)
     articles = find_favorite_article(origin_article_list)
     blog.make_daily_markdown_with(articles, origin_article_list)
