@@ -17,13 +17,10 @@ jobs:
     env:
       AI_PROVIDER: openai
       GPT_MODEL_NAME: gpt-4o-mini
-      GPT_BASE_URL: ${{ secrets.secrets.GPT_BASE_URL }}
-      GPT_API_KEY: ${{ secrets.secrets.GPT_API_KEY }}
+      GPT_BASE_URL: ${{ secrets.GPT_BASE_URL }}
+      GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Before Execute
         # You may pin to the exact commit or the version.
         run: |
@@ -31,6 +28,16 @@ jobs:
           echo $GPT_BASE_URL
           echo $AI_PROVIDER
           ls -l
+
+      - name: Python print secrets
+        run: |
+          import os
+          for q in (os.getenv("GPT_BASE_URL")):
+            print(q)
+        shell: python
+
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
