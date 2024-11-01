@@ -37,8 +37,8 @@ def find_favorite_article(rss_articles):
     # 限流，文章最多分析20篇
     max_analyze_nums = 60
     rss_articles = rss_articles[:max_analyze_nums]
-    # 默认输出结果10
-    max_article_nums = int(os.environ.get("MAX_ARTICLE_NUMS", "12"))
+    # 默认输出结果20
+    max_article_nums = int(os.environ.get("MAX_ARTICLE_NUMS", "20"))
     # 一个rss源对应一个总结，多条内容，合并处理
     # {"Apple News": [<article>]}
     rss_resource = {}
@@ -53,8 +53,7 @@ def find_favorite_article(rss_articles):
 
     show_articles = []
     for key, articles in rss_resource.items():
-        # 防止 gemini 限频
-        time.sleep(2)
+        time.sleep(1)
         evaluate_results = evaluate_article_with_gpt(articles)
         for evaluate in evaluate_results:
             for article in articles:
