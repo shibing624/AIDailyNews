@@ -17,6 +17,8 @@ jobs:
     env:
       AI_PROVIDER: openai
       GPT_MODEL_NAME: gpt-4o-mini
+      GPT_BASE_URL: ${{ secrets.secrets.GPT_BASE_URL }}
+      GPT_API_KEY: ${{ secrets.secrets.GPT_API_KEY }}
 
     steps:
       - name: Checkout
