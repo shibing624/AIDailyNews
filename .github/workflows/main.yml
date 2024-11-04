@@ -19,6 +19,7 @@ jobs:
       GPT_MODEL_NAME: gpt-4o-mini
       GPT_BASE_URL: ${{ secrets.GPT_BASE_URL }}
       GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
+      CZ_API_KEY: ${{ secrets.CZ_API_KEY }}
       MAX_ARTICLE_NUMS: 25
       RSS_CACHE_ENABLE: true
 
