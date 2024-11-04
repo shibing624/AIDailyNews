@@ -106,7 +106,7 @@ def save_article(articles, draft_folder):
         data.append(article.__dict__)
 
     with open(path, "w") as fp:
-        fp.write(json.dumps(data, indent=4))
+        fp.write(json.dumps(data, indent=2, ensure_ascii=False))
 
 
 def decode_article(path):
