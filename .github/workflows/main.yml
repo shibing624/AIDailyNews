@@ -66,3 +66,18 @@ jobs:
           git commit -m $(date '+%Y-%m-%d')
           git pull
           git push
+
+      - name: To podcast
+        run: python convert_article_url_to_podcast.py
+
+      # Runs a set of commands using the runners shell
+      - name: push to origin main
+        run: |
+          echo "start push"
+          git config --global user.name "shibing624"
+          git config --global user.email "shibing624@126.com"
+          git pull
+          git add news/*.md
+          git commit -m $(date '+%Y-%m-%d')
+          git pull
+          git push
