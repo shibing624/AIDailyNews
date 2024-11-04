@@ -38,7 +38,7 @@ def make_daily_markdown_with(articles, rss_list):
 
         category_contents.append(make_daily_category(category=category, articles=articles))
 
-    md_path, meta_data = make_meta_data(description="\n".join(article_titles), tags=tags)
+    md_path, meta_data, backup_md_path = make_meta_data(description="\n".join(article_titles), tags=tags)
     daily_guide = make_daily_guide(article_titles)
     if len(category_contents) == 0:
         logger.error("category content is empty!")
@@ -48,6 +48,10 @@ def make_daily_markdown_with(articles, rss_list):
     with open(md_path, "w") as fp:
         fp.write(blog.make_blog())
         logger.info(f"write to file: {md_path}")
+    # copy file to backup_md_path file
+    with open(backup_md_path, "w") as fp:
+        fp.write(blog.make_blog())
+        logger.debug(f"write to file: {backup_md_path}")
 
 
 def make_meta_data(description, tags):
@@ -73,8 +77,9 @@ tags:
 ---
 """
 
-    path = f"{news_folder}/dailyNews_{today_str}.md"
-    return path, data
+    md_path = os.path.join(news_folder, f"dailyNews_{today_str}.md")
+    backup_md_path = os.path.join(news_folder, f"dailyNews.md")
+    return md_path, data, backup_md_path
 
 
 def make_daily_category(category, articles):
