@@ -102,6 +102,11 @@
                     "url": "https://developer.apple.com/news/rss/news.rss",
                     "output_count": 1,
                     "image_enable": true
+                },
+                {
+                    "title": "每日论文",
+                    "rsshub_path": "huggingface/daily-papers",
+                    "output_count": 3,
                 }
             ]
         },
