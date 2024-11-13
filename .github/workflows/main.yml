@@ -21,7 +21,7 @@ jobs:
       GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
       CZ_API_KEY: ${{ secrets.CZ_API_KEY }}
       MAX_ARTICLE_NUMS: 25
-      RSS_CACHE_ENABLE: true
+      RSS_CACHE_ENABLE: false
 
     steps:
       - name: Before Execute
