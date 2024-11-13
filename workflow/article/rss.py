@@ -44,10 +44,19 @@ def load_rss_configs(resource):
     rss_items = []
 
     def load_config_with(path):
-        with open(path, "r") as fp:
-            data = json.loads(fp.read())
-            rss_categories.extend(data["categories"])
-            rss_configs.update(data["configuration"])
+        try:
+            with open(path, "r") as fp:
+                # 检查文件是否为空
+                if fp.read().strip() == "":
+                    raise ValueError(f"The file {path} is empty.")
+                fp.seek(0)  # 重置文件指针
+                data = json.loads(fp.read())
+                rss_categories.extend(data.get("categories", []))
+                rss_configs.update(data.get("configuration", {}))
+        except (IOError, ValueError) as e:
+            logger.error(f"Error reading or parsing file {path}: {e}")
+        except json.JSONDecodeError as e:
+            logger.error(f"Error parsing JSON in file {path}: {e}")
 
     if os.path.isdir(resource):
         for file in os.listdir(resource):
