@@ -13,5 +13,5 @@ def load_config_with(path):
 
 r = load_config_with("rss.json")
 print(r)
-rr = json.dumps(r, indent=4, ensure_ascii=False)
+rr = json.dumps(r, indent=2, ensure_ascii=False)
 print(rr)

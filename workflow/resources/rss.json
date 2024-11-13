@@ -172,6 +172,15 @@
                     "url": "https://crazy.capital/feed"
                 }
             ]
+        },
+        {
+            "category": "📚 Paper",
+            "items": [
+                {
+                    "title": "Hugging Face Daily Papers",
+                    "rsshub_path": "huggingface/daily-papers"
+                }
+            ]
         }
     ]
 }
