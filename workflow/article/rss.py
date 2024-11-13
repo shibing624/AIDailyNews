@@ -45,7 +45,8 @@ def load_rss_configs(resource):
 
     def load_config_with(path):
         try:
-            with open(path, "r") as fp:
+            logger.info(f"Loading RSS configuration from {path}")
+            with open(path, "r", encoding='utf-8') as fp:
                 # 检查文件是否为空
                 if fp.read().strip() == "":
                     raise ValueError(f"The file {path} is empty.")
