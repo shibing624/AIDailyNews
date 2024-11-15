@@ -110,17 +110,13 @@
             "items": [
                 {
                     "title": "Github repo trending",
-                    "rsshub_path": "github/trending/weekly/python",
-                    "type": "code",
-                    "input_count": 3,
-                    "output_count": 3
+                    "rsshub_path": "github/trending/daily/python",
+                    "type": "code"
                 },
                 {
                     "title": "Github repo trending",
                     "rsshub_path": "github/trending/weekly/any",
-                    "type": "code",
-                    "input_count": 1,
-                    "output_count": 0
+                    "type": "code"
                 }
             ]
         },
