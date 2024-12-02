@@ -14,8 +14,10 @@ def evaluate_article_with_gpt(articles):
     prompt = multi_content_prompt
 
     gpt_input = ""
+    max_input_tokens = int(os.getenv("GPT_MAX_INPUT_TOKENS", 8000))
     for idx, item in enumerate(articles):
-        gpt_input += f"```link: {item.link}, content:{item.summary}```.\n"
+        content = item.summary[:max_input_tokens]
+        gpt_input += f"```link: {item.link}, content:{content}```.\n"
 
     ai_provider = os.environ.get("AI_PROVIDER")
     if ai_provider == "openai":
@@ -83,22 +85,24 @@ def request_openai(prompt, content):
         base_url = os.getenv("GPT_BASE_URL")
         model = os.getenv("GPT_MODEL_NAME", "gpt-4o-mini")
         # logger.debug(f"request openai: {api_key}, {base_url}")
-        client = OpenAI(api_key=api_key,
-                        base_url=base_url)
-
-        chat_completion = client.chat.completions.create(messages=[
-            {
-                "role": "system",
-                "content": prompt
-            },
-            {
-                "role": "user",
-                "content": content
-            }
-        ], model=model)
+        client = OpenAI(api_key=api_key, base_url=base_url)
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": prompt
+                },
+                {
+                    "role": "user",
+                    "content": content
+                }
+            ],
+            model=model
+        )
         return chat_completion.choices[0].message.content
     except Exception as e:
         logger.error(f"request openai failed: {e}")
+        return ""
 
 
 def transform2json(result):

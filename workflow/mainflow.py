@@ -54,6 +54,8 @@ def find_favorite_article(rss_articles):
 
     show_articles = []
     for key, articles in rss_resource.items():
+        if not articles:
+            continue
         time.sleep(1)
         evaluate_results = evaluate_article_with_gpt(articles)
         for evaluate in evaluate_results:
