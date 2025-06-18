@@ -65,8 +65,19 @@ jobs:
           echo "start push"
           git config --global user.name "shibing624"
           git config --global user.email "shibing624@126.com"
-          git pull
-          git add news/*.md
-          git commit -m $(date '+%Y-%m-%d')
-          git pull
-          git push
+          git pull --rebase origin main
+    
+          # 检查是否有文件需要更新
+          if [[ $(git status --porcelain) ]]; then
+            # 添加变更并提交
+            git add news/*.md
+            git commit -m "$(date '+%Y-%m-%d')"
+            
+            # 再次拉取（以防在我们提交期间有新的远程更新）
+            git pull --rebase origin main
+            
+            # 推送提交
+            git push origin main
+          else
+            echo "No changes to commit"
+          fi
