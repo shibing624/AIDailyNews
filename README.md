@@ -1,6 +1,6 @@
 ## DailyNewsReport
 
-My Daily News：一键部署独属于你的每日新闻总览,支持 GPT3，Gemini Pro 模型。
+My Daily News：一键部署独属于你的每日新闻总览,支持 GPT4，Gemini Pro 模型。
 
 ![](https://cdn.zhangferry.com/Images/202402212338780.png)
 

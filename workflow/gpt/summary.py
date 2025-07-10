@@ -12,7 +12,6 @@ def evaluate_article_with_gpt(articles):
     logger.info(f"start summary: {article_links}")
 
     prompt = multi_content_prompt
-
     gpt_input = ""
     max_input_tokens = int(os.getenv("GPT_MAX_INPUT_TOKENS", 8000))
     for idx, item in enumerate(articles):
@@ -86,20 +85,23 @@ def request_openai(prompt, content):
         model = os.getenv("GPT_MODEL_NAME", "gpt-4o-mini")
         # logger.debug(f"request openai: {api_key}, {base_url}")
         client = OpenAI(api_key=api_key, base_url=base_url)
+        messages = [
+            {
+                "role": "system",
+                "content": prompt
+            },
+            {
+                "role": "user",
+                "content": content
+            }
+        ]
         chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "system",
-                    "content": prompt
-                },
-                {
-                    "role": "user",
-                    "content": content
-                }
-            ],
+            messages=messages,
             model=model
         )
-        return chat_completion.choices[0].message.content
+        r = chat_completion.choices[0].message.content
+        logger.debug(f"input messages: {messages}, model: {model}, response: {r}")
+        return r
     except Exception as e:
         logger.error(f"request openai failed: {e}")
         return ""
@@ -114,11 +116,10 @@ def transform2json(result):
     text = text.removesuffix("```")
     # 有时输出格式可能不完全符合json
     try:
-        json_obj = json.loads(text)
-        # 关键信息校验
-        format_json = json_obj
+        format_json = json.loads(text)
     except Exception as e:
-        logger.exception(f"{e}")
+        logger.error(f"input text: {text}, error: {e}")
+        format_json = eval(text)
     finally:
         return format_json
 

@@ -3,7 +3,6 @@ from workflow.gpt.summary import evaluate_article_with_gpt
 import workflow.article.rss as rss
 import workflow.article.blog as blog
 import time
-
 from loguru import logger
 
 
@@ -88,12 +87,12 @@ def find_favorite_article(rss_articles):
 
 def find_valid_file():
     """是否为有效rss缓存"""
-    if os.environ.get("RSS_CACHE_ENABLE") != "true":
+    if os.environ.get("RSS_CACHE_ENABLE", '').lower() != "true":
         return None, None
-
     current_directory = os.path.dirname(os.path.abspath(__file__))
-
-    cache_folder = f"{current_directory}/draft"
+    cache_folder = f"{current_directory}/../draft"
+    logger.debug(f"cache folder: {cache_folder}")
+    os.makedirs(cache_folder, exist_ok=True)
     today_str = datetime.date.today().strftime('%Y-%m-%d')
     cache_files = glob.glob(f"{cache_folder}/*{today_str}.json")
     cache_file = cache_files[-1] if cache_files else None
@@ -114,7 +113,7 @@ def save_article(articles, draft_folder):
 def decode_article(path):
     """根据文件解析"""
     rss_list = []
-    with open(path, "r") as fp:
+    with open(path, "r", encoding='utf-8') as fp:
         object_list = json.loads(fp.read())
         for item in object_list:
             rss_item = rss.Article()
