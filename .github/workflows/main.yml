@@ -65,7 +65,17 @@ jobs:
           echo "start push"
           git config --global user.name "shibing624"
           git config --global user.email "shibing624@126.com"
+          # 检查是否有未暂存的修改
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+              # 自动提交所有修改
+              git commit -a -m "Auto-commit before rebase"
+          fi
+
           git pull --rebase
+          # 如果之前有暂存，尝试恢复
+          if [ "$HAS_STASH" -eq 1 ]; then
+              git stash pop
+          fi
     
           git add news/*.md
           git commit -m "$(date '+%Y-%m-%d')"
