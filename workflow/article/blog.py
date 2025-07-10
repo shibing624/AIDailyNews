@@ -3,6 +3,8 @@ from datetime import datetime
 from dateutil import tz
 from loguru import logger
 
+current_directory = os.path.dirname(os.path.abspath(__file__))
+
 
 class Blog:
     metadata: str
@@ -45,13 +47,14 @@ def make_daily_markdown_with(articles, rss_list):
         return
     blog = Blog(metadata=meta_data, guide=daily_guide, categories=category_contents)
     logger.info(f"make blog success: {meta_data}")
-    with open(md_path, "w") as fp:
-        fp.write(blog.make_blog())
-        logger.info(f"write to file: {md_path}")
-    # copy file to backup_md_path file
-    with open(backup_md_path, "w") as fp:
-        fp.write(blog.make_blog())
-        logger.debug(f"write to file: {backup_md_path}")
+    if md_path:
+        with open(md_path, "w") as fp:
+            fp.write(blog.make_blog())
+            logger.info(f"write to file: {md_path}")
+    if backup_md_path:
+        with open(backup_md_path, "w") as fp:
+            fp.write(blog.make_blog())
+            logger.debug(f"write to file: {backup_md_path}")
 
 
 def make_meta_data(description, tags):
@@ -59,7 +62,6 @@ def make_meta_data(description, tags):
     today_with_timezone = datetime.today().astimezone(time_zone)
     today_str = today_with_timezone.strftime("%Y-%m-%d")
 
-    current_directory = os.path.dirname(os.path.abspath(__file__))
     # 获取当前项目的根目录
     project_root = os.path.dirname(current_directory)
     news_folder = f"{project_root}/../news/"
@@ -78,7 +80,7 @@ tags:
 """
 
     md_path = os.path.join(news_folder, f"dailyNews_{today_str}.md")
-    backup_md_path = os.path.join(news_folder, f"dailyNews.md")
+    backup_md_path = ""
     return md_path, data, backup_md_path
 
 

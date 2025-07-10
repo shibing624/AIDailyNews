@@ -1,10 +1,11 @@
 import os, json, datetime, glob
+import time
+from loguru import logger
 from workflow.gpt.summary import evaluate_article_with_gpt
 import workflow.article.rss as rss
 import workflow.article.blog as blog
-import time
-from loguru import logger
 
+current_directory = os.path.dirname(os.path.abspath(__file__))
 
 def execute(rss_resource="workflow/resources"):
     # 缓存判断
@@ -89,7 +90,6 @@ def find_valid_file():
     """是否为有效rss缓存"""
     if os.environ.get("RSS_CACHE_ENABLE", '').lower() != "true":
         return None, None
-    current_directory = os.path.dirname(os.path.abspath(__file__))
     cache_folder = f"{current_directory}/../draft"
     logger.debug(f"cache folder: {cache_folder}")
     os.makedirs(cache_folder, exist_ok=True)
@@ -106,7 +106,7 @@ def save_article(articles, draft_folder):
     for article in articles:
         data.append(article.__dict__)
 
-    with open(path, "w") as fp:
+    with open(path, "w", encoding='utf-8') as fp:
         fp.write(json.dumps(data, indent=2, ensure_ascii=False))
 
 
