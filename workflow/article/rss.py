@@ -77,41 +77,45 @@ def load_rss_configs(resource):
 
 def parse_rss_config(rss_config):
     """仅获取当天的rss信息"""
-    res = feedparser.parse(rss_config["url"],
-                           agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
-    keymap = res.keymap
-    today_rss = []
-    # 默认一个rss源只获取一定数量信息
-    max_count = rss_config.get("input_count", 4)
+    try:
+        res = feedparser.parse(rss_config["url"],
+                               agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
+        keymap = res.keymap
+        today_rss = []
+        # 默认一个rss源只获取一定数量信息
+        max_count = rss_config.get("input_count", 4)
 
-    for article in res[keymap["items"]]:
-        # 获取当天信息
-        time_zone = tz.gettz(time_zone_value)
-        target_date = datetime.today().astimezone(time_zone).date()
-        # issued > date > res.date
-        article_date = unify_timezone(article.get(keymap["issued"],
-                                                  article.get(keymap["date"],
-                                                              res.get(keymap["date"]))))
-        if article_date.date() != target_date:
-            # logger.warning(f'{rss_config["url"]} content of {article_date.date()} is not equal to {target_date}')
-            continue
-        rss = gen_article_from(rss_item=article, rss_type=rss_config.get("type"),
-                               image_enable=rss_config.get("image_enable", False),
-                               rss_date=article_date.strftime("%Y-%m-%d %H:%M:%S"), channel=res[keymap["channel"]],
-                               config=rss_config)
-        if rss is None:
-            # logger.warning(f'{rss_config["url"]} content is empty')
-            continue
-        today_rss.append(rss)
-        if len(today_rss) >= max_count:
-            logger.warning(f'{rss_config["url"]} content count of today is over {max_count}, break')
-            return today_rss
-    # 防止一个地址有过多内容，这里限定下数量
-    if len(today_rss) == 0:
-        logger.info(f'{rss_config["url"]} content of today is empty')
-    else:
-        logger.info(f'{rss_config["url"]} content count of today is {len(today_rss)}')
-    return today_rss
+        for article in res[keymap["items"]]:
+            # 获取当天信息
+            time_zone = tz.gettz(time_zone_value)
+            target_date = datetime.today().astimezone(time_zone).date()
+            # issued > date > res.date
+            article_date = unify_timezone(article.get(keymap["issued"],
+                                                      article.get(keymap["date"],
+                                                                  res.get(keymap["date"]))))
+            if article_date.date() != target_date:
+                # logger.warning(f'{rss_config["url"]} content of {article_date.date()} is not equal to {target_date}')
+                continue
+            rss = gen_article_from(rss_item=article, rss_type=rss_config.get("type"),
+                                   image_enable=rss_config.get("image_enable", False),
+                                   rss_date=article_date.strftime("%Y-%m-%d %H:%M:%S"), channel=res[keymap["channel"]],
+                                   config=rss_config)
+            if rss is None:
+                # logger.warning(f'{rss_config["url"]} content is empty')
+                continue
+            today_rss.append(rss)
+            if len(today_rss) >= max_count:
+                logger.warning(f'{rss_config["url"]} content count of today is over {max_count}, break')
+                return today_rss
+        # 防止一个地址有过多内容，这里限定下数量
+        if len(today_rss) == 0:
+            logger.info(f'{rss_config["url"]} content of today is empty')
+        else:
+            logger.info(f'{rss_config["url"]} content count of today is {len(today_rss)}')
+        return today_rss
+    except Exception as e:
+        logger.error(f'Failed to parse RSS from {rss_config["url"]}: {e}')
+        return []
 
 
 def gen_article_from(rss_item, rss_type, image_enable=False, rss_date=None, channel=None, config=None):
